@@ -11,7 +11,7 @@ use pocketmine\utils\Config;
 use pocketmine\Player;
 use pocketmien\plugin\Plugin;
 
-class StartPlugin extends PluginBase implements Listener {
+class ShowOps extends PluginBase implements Listener {
     private $m_version = 1;
     private $messages, $db;
     
@@ -19,15 +19,15 @@ class StartPlugin extends PluginBase implements Listener {
         @mkdir( $this->getDataFolder());
         $this->initMessage();
 
-        $this->db = (new Config( $this->getDataFolder ()."pluginDB.json", Config::JSON. []))->getAll();
         $this->getServer()->getPluginManager()->registerEvents( $this, $this );
-        $this->registerCommand("/*커맨드*/", "/*퍼미션*/", $this->get("/*description*/"),$this->get("/*usage*/")); 
+        $this->registerCommand($this->get("ops.command"), $this->get("/*description*/"),$this->get("/*usage*/")); 
     }
 #-----------------------------------------------------
     public function get($var) {
-        if(isset ($this->messages[$this->getServer()->getLanguage->getLang()])) {
+        if(isset ($this->messages[$this->getServer()->getLanguage()->getLang()])) {
             $lang = $this->getServer()->getLanguage()->getLang();
         } else {
+            //$lang = "eng";
             $lang = "kor";
         }
         return $this->messages[lang."-".$var];
@@ -69,9 +69,6 @@ class StartPlugin extends PluginBase implements Listener {
         if( $mark == null)
             $mark = $this->get("default-prefix");
         $player->sendMessage (TextFormat::RED . $mark . "" . $text);
-    }
-    public function onDisable() {
-
     }
 #-----------------------------------------------------
     public function onPlayerJoin(PlayerJoinEvent $event) {
